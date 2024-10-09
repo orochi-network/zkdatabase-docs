@@ -1,0 +1,68 @@
+name: Build & Push Image to Docker hub'
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DOCKER_REPO: orochinetwork/zkdatabase-doc
+
+jobs:
+  build:
+    name: build
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Build image
+        uses: docker/build-push-action@v5
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          DOCKER_REPO: ${{ env.DOCKER_REPO }}
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.DOCKER_REPO }}:latest
+            ${{ env.DOCKER_REPO }}:${{ env.IMAGE_TAG }}
+  gitops-push:
+    name: Push Changes to GitOps
+    needs: build
+    runs-on: [self-hosted, linux]
+    env:
+      version: ${{ github.sha }}
+      gitops_branch: main
+    steps:
+      - name: Push changes to GitOps
+        run: |
+          eval $(ssh-agent -s)
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' | ssh-add - > /dev/null 2>&1
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+          git config --global user.name "${{ secrets.GITOPS_USER }}"
+          git config --global user.email "${{ secrets.GITOPS_EMAIL }}"
+          git clone ${{ secrets.GITOPS_REPO }}
+
+          cd test-argo-cd
+          git checkout ${{ env.gitops_branch }}
+
+          VALUES_PATH="services/orochi/general/docusaurus/docusaurus/values.yaml"
+          sed -i "s| tag: .*| tag: ${{ env.version }}|" "$VALUES_PATH"
+          git add "$VALUES_PATH"
+
+          echo "Committing and pushing changes for docusaurus to ${{ env.gitops_branch }} version ${{ env.version }}"
+          git commit -m "Update versions for docusaurus to ${{ env.version }}"
+          git push origin ${{ env.gitops_branch }}
+
+          cd ..
+          rm -rf test-argo-cd
