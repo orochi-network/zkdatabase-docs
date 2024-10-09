@@ -20,6 +20,7 @@ RUN yarn build
 # Use a stable nginx image for deployment
 FROM nginx:stable-alpine AS deploy
 
-EXPOSE 80
 # Copy the built app from the production stage to the nginx HTML directory
 COPY --from=production /home/node/app/build /usr/share/nginx/html/
+
+EXPOSE 80
