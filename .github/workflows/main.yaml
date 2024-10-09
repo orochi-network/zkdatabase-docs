@@ -6,12 +6,12 @@ on:
       - main
 
 env:
-  DOCKER_REPO: harris1111/zkdatabase-doc
+  DOCKER_REPO: orochinetwork/zkdatabase-doc
 
 jobs:
   build:
     name: build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux]
 
     steps:
       - name: Checkout
@@ -37,10 +37,10 @@ jobs:
   gitops-push:
     name: Push Changes to GitOps
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux]
     env:
       version: ${{ github.sha }}
-      gitopsbranch: devops/zkdatabase-docs
+      gitopsbranch: main
     steps:
       - name: Push changes to GitOps
         run: |
