@@ -40,7 +40,7 @@ jobs:
     runs-on: [self-hosted, linux]
     env:
       version: ${{ github.sha }}
-      gitopsbranch: main
+      gitops_branch: main
     steps:
       - name: Push changes to GitOps
         run: |
@@ -54,15 +54,15 @@ jobs:
           git clone ${{ secrets.GITOPS_REPO }}
 
           cd test-argo-cd
-          git checkout ${{ env.gitopsbranch }}
+          git checkout ${{ env.gitops_branch }}
 
           VALUES_PATH="services/orochi/general/docusaurus/docusaurus/values.yaml"
           sed -i "s| tag: .*| tag: ${{ env.version }}|" "$VALUES_PATH"
           git add "$VALUES_PATH"
 
-          echo "Committing and pushing changes for docusaurus to ${{ env.gitopsbranch }} version ${{ env.version }}"
+          echo "Committing and pushing changes for docusaurus to ${{ env.gitops_branch }} version ${{ env.version }}"
           git commit -m "Update versions for docusaurus to ${{ env.version }}"
-          git push origin ${{ env.gitopsbranch }}
+          git push origin ${{ env.gitops_branch }}
 
           cd ..
           rm -rf test-argo-cd
