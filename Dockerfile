@@ -1,5 +1,5 @@
 ## Production ##################################################################
-# Use a larger node image to build for native dependencies (e.g., gcc, python)
+# Use our in-house base image to build
 FROM orochinetwork/node:20-iron AS production
 
 # Reduce yarn log spam and disable color during install within Docker
