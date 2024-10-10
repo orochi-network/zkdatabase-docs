@@ -8,23 +8,13 @@ import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
-        </div>
+    <div className='w-full h-fit bg-[#112633] p-10'>
+      <div className='text-4xl text-neutral-50'>zkDatabase Documentation</div>
+      <div className='text-lg text-neutral-50 w-[70%] pt-4'>
+        Welcome to the official zkDatabase Documentation. Whether you're a developer, database administrator, or just starting your journey with zkDatabase, our documentation provides you with the information and knowledge needed to build applications on MongoDB and the Atlas developer data platform.
       </div>
-    </header>
+    </div>
   );
 }
 
@@ -32,10 +22,10 @@ export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
+      title='Homepage'
       description="Description will go into a meta tag in <head />">
       <HomepageHeader />
-      <main>
+      <main className='lg:px-20 sm:px-10'>
         <HomepageFeatures />
       </main>
     </Layout>
