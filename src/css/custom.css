@@ -29,6 +29,15 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
+.navbar__items--right {
+  display: flex;
+  gap: 10px;
+}
+
+/* .button {
+  background-color: fd4a35
+} */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

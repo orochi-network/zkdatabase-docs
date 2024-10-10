@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useColorMode } from '@docusaurus/theme-common';
 import Link from '@docusaurus/Link';
 import { useThemeConfig } from '@docusaurus/theme-common';
 import { Telegram } from '@site/static/svg-icons/Telegram';
@@ -68,18 +68,21 @@ function FooterNavigate() {
     },
   ];
 
+  const { colorMode } = useColorMode();
+  const isDarkMode = colorMode === 'dark';
+
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-3 gap-y-8 gap-x-2 justify-start'>
+    <div className='grid sm:grid-cols-1 lg:grid-cols-3 gap-y-8 gap-x-2 lg:justify-start sm:justify-center lg:items-start sm:items-center'>
       {navigate.map((nav, index) => (
         <ul key={'navigate-' + index} className='space-y-2 lg:space-y-4 hover:no-underline'>
-          <div className='font-medium uppercase text-neutral-500'>{nav.title}</div>
+          <div className={`font-medium text-sm uppercase ${isDarkMode ? 'text-neutral-50' : 'text-neutral-500'}`}>{nav.title}</div>
           {nav.links.map((link, indexLink) => (
             <div key={'links-' + indexLink}>
               <Link
                 aria-label={link.label}
                 href={link.href}
                 target='_blank'
-                className='hover:no-underline block text-start break-words font-semibold text-black'
+                className={`hover:no-underline block text-start break-words font-semibold ${isDarkMode ? 'text-neutral-500' : 'text-black'}`}
               >
                 {link.label}
               </Link>
@@ -91,23 +94,24 @@ function FooterNavigate() {
   );
 }
 
-export function SocialLink() {
+export function SocialLink({ isDarkMode }) {
+
   const socials = [
     {
       href: 'https://twitter.com/OrochiNetwork',
-      icon: <Twitter />,
+      icon: <Twitter color={isDarkMode ? '#ffffff' : ''} />,
     },
     {
       href: 'https://discord.com/invite/sTU4TUh8H3',
-      icon: <Discord />,
+      icon: <Discord color={isDarkMode ? '#ffffff' : ''} />,
     },
     {
       href: 'https://github.com/orochi-network',
-      icon: <Github />,
+      icon: <Github color={isDarkMode ? '#ffffff' : ''} />,
     },
     {
       href: 'https://t.me/OrochiNetwork',
-      icon: <Telegram />,
+      icon: <Telegram color={isDarkMode ? '#ffffff' : ''} />,
     },
   ];
 
@@ -129,36 +133,52 @@ function Footer(): JSX.Element | null {
   }
   const {logo} = footer;
   const year = new Date().getFullYear();
+  const { colorMode } = useColorMode();
+  const isDarkMode = colorMode === 'dark';
 
   return (
-    <footer className={clsx('w-screen mx-auto grid max-w-[1136px] gap-8 bg-transparent px-6 py-[5rem]', 'lg:gap-14 lg:py-[6rem]')}>
-      <div className='grid lg:grid-cols-[auto,minmax(0,1fr)] lg:gap-[11.375rem]'>
-        <div className='flex flex-col justify-between'>
-          <div className='flex flex-col gap-12'>
-            <Link href='/' className='block h-12'>
-              <FooterLogo logo={logo} />
-            </Link>
-            <div className='text-10 text-neutral-400'>
-              The World First Zero-Knowledge Modular Data Availability Layer
+    <footer className={clsx('w-full grid gap-8 px-6 py-[5rem]', 'lg:gap-14 lg:py-[6rem]', `${isDarkMode ? 'bg-[#252526]' : 'bg-transparent'}`)}>
+      <div className={`max-w-[1136px] mx-auto`}>
+        <div className='grid lg:grid-cols-[auto,minmax(0,1fr)] lg:gap-[11.375rem]'>
+          <div className='flex flex-col lg:justify-between lg:items-start sm:items-center'>
+            <div className='flex flex-col gap-12 sm:items-center lg:items-start'>
+              <Link href='https://orochi.network/' className='block h-12'>
+                <FooterLogo logo={logo} />
+              </Link>
+              <div className='text-10 text-neutral-400 '>
+                The World First Zero-Knowledge Modular Data Availability Layer
+              </div>
             </div>
+            <SocialLink isDarkMode={isDarkMode} />
           </div>
-          <SocialLink />
-        </div>
-        <FooterNavigate />
-      </div>
-
-      <hr className='m-0 h-[1px] w-full border-none bg-neutral-300' />
-
-      <div className='flex flex-wrap items-center justify-between gap-8'>
-        <div className='flex flex-row gap-2 h-fit items-center'>
-          <div className='font-semibold'>Privacy Policy</div>
-          <div className="w-[1px] h-[20px] bg-neutral-300"></div>
-          <div className='font-semibold'>Term of Service</div>
+          <FooterNavigate />
         </div>
 
-        <p className='text-sm text-neutral-600 lg:text-base lg:text-neutral-500'>
-          © {year} Orochi Network. All rights reserved.
-        </p>
+        <hr className='m-0 h-[1px] w-full border-none bg-neutral-300' />
+
+        <div className='flex flex-wrap items-center justify-between gap-8 pt-10 sm:justify-center sm:items-center lg:justify-between'>
+          <div className='flex flex-row gap-2 h-fit items-center'>
+            <Link 
+              href="" 
+              target='_blank' 
+              className={`font-semibold hover:no-underline ${isDarkMode ? 'text-neutral-500' : 'text-black'}`}
+            >
+              Privacy Policy
+            </Link>
+            <div className="w-[1px] h-[20px] bg-neutral-400"></div>
+            <Link 
+              href="" 
+              target='_blank' 
+              className={`font-semibold hover:no-underline ${isDarkMode ? 'text-neutral-500' : 'text-black'}`}
+            >
+              Term of Service
+            </Link>
+          </div>
+
+          <p className='text-sm text-neutral-600 lg:text-base lg:text-neutral-500 pt-5'>
+            © {year} Orochi Network. All rights reserved.
+          </p>
+        </div>
       </div>
     </footer>
   );

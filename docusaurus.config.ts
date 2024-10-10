@@ -16,7 +16,7 @@ const config: Config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "facebook", // Usually your GitHub org/user name.
+  organizationName: "Orochi Network", // Usually your GitHub org/user name.
   projectName: "zkDatabase", // Usually your repo name.
 
   onBrokenLinks: "throw",
@@ -40,8 +40,8 @@ const config: Config = {
           sidebarPath: "./sidebars.ts",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+          // editUrl:
+          //   "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
         blog: {
           showReadingTime: true,
@@ -81,20 +81,28 @@ const config: Config = {
           label: "Document",
         },
         {
-          href: "/blog",
+          to: "/contact",
           label: "Support",
         },
         {
-          href: "/blog",
+          to: "https://docs.orochi.network/",
           label: "Cookbook",
         },
         {
-          href: "/blog",
+          to: "https://orochi.network/blog",
           label: "Blog",
         },
         {
-          href: "https://magical-caravel-b75.notion.site/Orochi-Network-Onboarding-Document-38c050910d2e4da4b92709bc867e790c",
+          to: "https://magical-caravel-b75.notion.site/Orochi-Network-Onboarding-Document-38c050910d2e4da4b92709bc867e790c",
           label: "Collab",
+        },
+        {
+          // type: "html",
+          position: "right",
+          label: "Get started",
+          to: "https://test-app.zkdatabase.org/",
+          className: "button button--primary button--lg text-white",
+          style: { color: "white" },
         },
       ],
     },
@@ -159,6 +167,8 @@ const config: Config = {
       logo: {
         alt: "zkDatabase Logo",
         src: "img/orochiLogo.svg",
+        // href: "https://orochi.network/",
+        srcDark: "img/orochiLogoDark.svg",
         width: 200,
       },
       copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
